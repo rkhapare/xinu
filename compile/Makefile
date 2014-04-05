@@ -14,7 +14,10 @@
 #
 # $ make PLATFORM=arm-rpi
 #
-PLATFORM := x86
+#PLATFORM := x86
+PLATFORM := arm-rpi
+USERNAME := rkhapare
+NODE := 32
 
 # Filename of boot image to create (platform can override it if really needed)
 BOOTIMAGE := xinu.boot
@@ -94,7 +97,7 @@ LDLIBS  :=
 
 # Set default include directories.  platformVars can add additional directories
 # to this if really needed.
-INCLUDE := -I$(TOPDIR)/include -I$(TOPDIR)/system/platforms/$(PLATFORM) -I$(TOPDIR)
+INCLUDE := -I$(TOPDIR)/include -I$(TOPDIR)/system/platforms/$(PLATFORM) -I$(TOPDIR)# -I$(TOPDIR)/device/bcm2835
 
 # Override this as -DDETAIL to enable certain debugging messages in Embedded
 # Xinu.
@@ -223,12 +226,13 @@ SYSCOMPS := loader/platforms/$(PLATFORM) \
 # List of device driver components to build into Xinu.  Generated from DEVICES,
 # which should have been set in platformVars.
 DEVCOMPS := $(DEVICES:%=device/%)
+#FFCOMPS := $(FILESYSTEMS:%=fs/%)
 
 # APPCOMPS, the list of application components to build into Xinu, should also
 # have been set in platformVars.
 
 # List of all Xinu components to include
-COMPS    := $(SYSCOMPS) $(DEVCOMPS) $(APPCOMPS)
+COMPS    := $(SYSCOMPS) $(DEVCOMPS) $(APPCOMPS)# $(FFCOMPS)
 
 # Location of the conf.c file defining system devices
 CONFC    := $(TOPDIR)/system/conf.c
@@ -348,6 +352,26 @@ realclean: clean libclean confclean $(PLATCLEAN)
 	rm -f ../system/conf.c
 	rm -f vn version $(TOPDIR)/include/version.h
 	rm -f Makefile.bak
+
+download:
+	ssh ${USERNAME}@cyclops.soic.indiana.edu rm -f /home/tftpboot/rpi${NODE}.img
+	scp ${BOOTIMAGE} ${USERNAME}@cyclops.soic.indiana.edu:/home/tftpboot/rpi${NODE}.img
+	ssh ${USERNAME}@cyclops.soic.indiana.edu chmod go+rw /home/tftpboot/rpi${NODE}.img
+	rpipower off ${NODE}
+	sleep 1
+	rpipower on ${NODE}
+
+reset:
+	rpipower off ${NODE}
+	sleep 1
+	rpipower on ${NODE}
+
+qemu:
+	qemu-system-arm -M versatilepb -m 128M -nographic -cpu arm1176  -kernel xinu.boot -s 
+
+gdb:
+	qemu-system-arm -M versatilepb -m 128M -nographic -cpu arm1176  -kernel xinu.boot -S -gdb tcp::5556
+
 
 ###################
 # Special targets #
