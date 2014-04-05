@@ -81,6 +81,7 @@ const struct centry commandtab[] = {
     {"telnetserver", FALSE, xsh_telnetserver},
 #endif
     {"test", FALSE, xsh_test},
+    //{"testfs", FALSE, xsh_testfs},
 #if HAVE_TESTSUITE
     {"testsuite", TRUE, xsh_testsuite},
 #endif
