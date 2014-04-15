@@ -24,16 +24,24 @@ void bcm2835_gpio_set(unsigned int pin)
 {
 	//BCM2835_GPIO->GPSET0 = 1 << pin;
 	unsigned int var = read_from_register(get_gpioregister_addr(BCM2835_GPSET0_OFFSET));
+	printf("\nBCM2835_GPSET0[%08x] %08x" ,get_gpioregister_addr(BCM2835_GPSET0_OFFSET), var);
         var = 1 << pin;
+	printf(" expected %08x ", var);
         write_to_register(get_gpioregister_addr(BCM2835_GPSET0_OFFSET), var);
+	var = read_from_register(get_gpioregister_addr(BCM2835_GPSET0_OFFSET));
+	printf(" -> %08x." ,var);
 }
 
 void bcm2835_gpio_clr(unsigned int pin)
 {
 	//BCM2835_GPIO->GPCLR0  = 1 << pin;
 	unsigned int var = read_from_register(get_gpioregister_addr(BCM2835_GPCLR0_OFFSET));
+	printf("\nBCM2835_GPCLR0[%08x] %08x" ,get_gpioregister_addr(BCM2835_GPCLR0_OFFSET), var);
 	var = 1 << pin;
+	printf(" expected %08x ", var);
     	write_to_register(get_gpioregister_addr(BCM2835_GPCLR0_OFFSET), var);
+	var = read_from_register(get_gpioregister_addr(BCM2835_GPCLR0_OFFSET));
+	printf(" -> %08x." ,var);
 }
 
 void bcm2835_gpio_write(unsigned int pin, unsigned int on) {
@@ -47,8 +55,9 @@ unsigned int bcm2835_gpio_lev(unsigned int pin)
 {
     //uint32_t value = BCM2835_GPIO->GPLEV0;
     //return (value & (1 << pin)) ? HIGH : LOW;
-    unsigned int var = read_from_register(get_gpioregister_addr(BCM2835_GPLEV0_OFFSET));
-    return (var & (1 << pin)) ? 1 : 0;
+    	unsigned int var = read_from_register(get_gpioregister_addr(BCM2835_GPLEV0_OFFSET));
+    	printf("\nBCM2835_GPLEV0[%08x] pin%d %d" ,get_gpioregister_addr(BCM2835_GPLEV0_OFFSET), pin, (var & (1 << pin)) ? 1 : 0);
+	return (var & (1 << pin)) ? 1 : 0;
 }
 
 /// Read the System Timer Counter register.
@@ -64,7 +73,7 @@ unsigned int bcm2835_gpio_lev(unsigned int pin)
 unsigned long long bcm2835_st_read(void)
 {
     //volatile unsigned int* addr;
-    unsigned long long st = 0;
+    	unsigned long long st = 0;
     //paddr = bcm2835_st + BCM2835_ST_CHI/4;
     //addr = (volatile unsigned int *) (BCM2835_ST_BASE + BCM2835_ST_CHI/4);
     //st = bcm2835_peri_read(paddr);
@@ -73,12 +82,14 @@ unsigned long long bcm2835_st_read(void)
     //paddr = bcm2835_st + BCM2835_ST_CLO/4;
     //addr = (volatile unsigned int *) (BCM2835_ST_BASE + BCM2835_ST_CLO/4);
     //st += bcm2835_peri_read(paddr);
-    unsigned int bits = read_from_register(get_stregister_addr(BCM2835_ST_CHI));
-    st += bits;
-    st <<= 32;
-    bits = read_from_register(get_stregister_addr(BCM2835_ST_CLO));
-    st += bits;
-    return st;
+    	unsigned int bits = read_from_register(get_stregister_addr(BCM2835_ST_CHI));
+	printf("\nBCM2835_ST[%08x] %08x" ,get_stregister_addr(BCM2835_ST_CHI), bits);
+    	st += bits;
+    	st <<= 32;
+    	bits = read_from_register(get_stregister_addr(BCM2835_ST_CLO));
+	printf(" %08x." ,bits);
+    	st += bits;
+    	return st;
 }
 
 // Delays for the specified number of microseconds with offset
@@ -98,18 +109,26 @@ void bcm2835_delayMicroseconds(unsigned long long micros)
 void bcm2835_gpio_pud(unsigned int pud)
 {
     //BCM2835_GPIO->GPPUD = pud;
-    unsigned int var = read_from_register(get_gpioregister_addr(BCM2835_GPPUD_OFFSET));
-    var &= 0;
-    var |= pud;
-    write_to_register(get_gpioregister_addr(BCM2835_GPPUD_OFFSET), var);
+    	unsigned int var = read_from_register(get_gpioregister_addr(BCM2835_GPPUD_OFFSET));
+	printf("\nBCM2835_GPPUD[%08x] %08x" ,get_gpioregister_addr(BCM2835_GPPUD_OFFSET), var);
+    	var &= 0;
+    	var |= pud;
+	printf(" expected %08x ", var);
+    	write_to_register(get_gpioregister_addr(BCM2835_GPPUD_OFFSET), var);
+	var = read_from_register(get_gpioregister_addr(BCM2835_GPPUD_OFFSET));
+	printf(" -> %08x." ,var);
 }
 
 void bcm2835_gpio_pudclk(unsigned int pin, unsigned int on)
 {
     //BCM2835_GPIO->GPPUDCLK0 =  (on ? 1 : 0) << pin;
-    unsigned int var = read_from_register(get_gpioregister_addr(BCM2835_GPPUDCLK0_OFFSET));
-    var = (on ? 1 : 0) << pin; 
-    write_to_register(get_gpioregister_addr(BCM2835_GPPUDCLK0_OFFSET), var);
+    	unsigned int var = read_from_register(get_gpioregister_addr(BCM2835_GPPUDCLK0_OFFSET));
+	printf("\nBCM2835_GPPUDCLK0[%08x] %08x" ,get_gpioregister_addr(BCM2835_GPPUDCLK0_OFFSET), var);
+    	var = (on ? 1 : 0) << pin; 
+	printf(" expected %08x ", var);
+    	write_to_register(get_gpioregister_addr(BCM2835_GPPUDCLK0_OFFSET), var);
+	var = read_from_register(get_gpioregister_addr(BCM2835_GPPUDCLK0_OFFSET));
+        printf(" -> %08x." ,var);
 }
 
 void bcm2835_gpio_set_pud(unsigned int pin, unsigned int pud)
@@ -141,7 +160,11 @@ void bcm2835_gpio_fsel(unsigned int gpio,unsigned int fSel)
                 default: printf("GPIO numbers > 54 not supported."); return;
         }
 	var = read_from_register(gpioAddr);
+	printf("\nBCM2835_GPFSEL%d[%08x] %08x" ,gpioBankNumber, gpioAddr, var);
         var &=~(BCM2835_GPIO_FSEL_MASK << BCM2835_GPIO_FSEL_SHIFT(gpio));
         var |= (fSel << BCM2835_GPIO_FSEL_SHIFT(gpio));
+	printf(" expected %08x ", var);
         write_to_register(gpioAddr, var);
+	var = read_from_register(gpioAddr);
+	printf(" -> %08x." ,var);
 }

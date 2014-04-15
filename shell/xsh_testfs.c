@@ -59,22 +59,22 @@ shellcmd xsh_testfs(int nargs, char *args[]) {
 
   f_mount(&Fatfs, path, 0);		/* Register volume work area (never fails) */
 
-  /*printf("\nOpen an existing file (message.txt).\n");
-    rc = f_open(&Fil, "MESSAGE.TXT", FA_READ);
+  printf("\nOpen an existing file (README).\n");
+    rc = f_open(&Fil, "README", FA_READ);
   if (rc) die(rc);
  
   printf("\nType the file content.\n");
   for (;;) {
-    rc = f_read(&Fil, Buff, sizeof Buff, &br);	*//* Read a chunk of file *//*
-    if (rc || !br) break;			*//* Error or end of file *//*
-    for (i = 0; i < br; i++)		        *//* Type the data *//*
+    rc = f_read(&Fil, Buff, sizeof Buff, &br);	/* Read a chunk of file */
+    if (rc || !br) break;			/* Error or end of file */
+    for (i = 0; i < br; i++)		        /* Type the data */
       putchar(Buff[i]);
   }
   if (rc) die(rc);
   
   printf("\nClose the file.\n");
   rc = f_close(&Fil);
-  if (rc) die(rc);*/
+  if (rc) die(rc);
   
   /*printf("\nCreate a new file (hello.txt).\n");
   rc = f_open(&Fil, "HELLO.TXT", FA_WRITE | FA_CREATE_ALWAYS);
@@ -87,7 +87,7 @@ shellcmd xsh_testfs(int nargs, char *args[]) {
   
   printf("\nClose the file.\n");
   rc = f_close(&Fil);
-  if (rc) die(rc);*/
+  if (rc) die(rc);
   
   printf("\nOpen root directory.\n");
   rc = f_opendir(&dir, "");
@@ -95,14 +95,14 @@ shellcmd xsh_testfs(int nargs, char *args[]) {
   
   printf("\nDirectory listing...\n");
   for (;;) {
-    rc = f_readdir(&dir, &fno);		/* Read a directory item */
-    if (rc || !fno.fname[0]) break;	/* Error or end of dir */
+    rc = f_readdir(&dir, &fno);		*//* Read a directory item *//*
+    if (rc || !fno.fname[0]) break;	*//* Error or end of dir *//*
     if (fno.fattrib & AM_DIR)
       printf("   <dir>  %s\n", fno.fname);
     else
       printf("%8lu  %s\n", fno.fsize, fno.fname);
   }
-  if (rc) die(rc);
+  if (rc) die(rc);*/
   
   printf("\nTest completed.\n");
 

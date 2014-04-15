@@ -117,6 +117,7 @@ shellcmd xsh_telnet(int, char *[]);
 shellcmd xsh_telnetserver(int, char *[]);
 shellcmd xsh_test(int, char *[]);
 shellcmd xsh_testfs(int, char *[]);
+shellcmd xsh_testdiskio(int, char*[]);
 shellcmd xsh_testsuite(int, char *[]);
 shellcmd xsh_timeserver(int, char *[]);
 shellcmd xsh_turtle(int, char *[]);

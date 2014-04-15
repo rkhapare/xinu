@@ -21,7 +21,7 @@
 extern "C" {
 #endif
 
-#include <integer.h>	/* Basic integer types */
+#include "integer.h"	/* Basic integer types */
 #include "ffconf.h"	/* FatFs configuration options */
 
 #if _FATFS != _FFCONF
@@ -240,6 +240,11 @@ TCHAR* f_gets (TCHAR* buff, int len, FIL* fp);					/* Get a string from the file
 #define f_error(fp) ((fp)->err)
 #define f_tell(fp) ((fp)->fptr)
 #define f_size(fp) ((fp)->fsize)
+
+#ifndef EOF
+#define EOF (-1)
+#endif
+
 
 
 

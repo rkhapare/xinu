@@ -1,0 +1,13 @@
+# This Makefile contains rules to build files in the ff10/ directory.
+#
+# Name of this component (the directory this file is stored in)
+COMP = ff10
+#
+# Source files for this component
+# Files for creating and accessing FAT Filesystem ff10
+C_FILES += ff.c
+S_FILES = 
+
+# Add the files to the compile source path
+DIR = ${TOPDIR}/${COMP}
+COMP_SRC += ${S_FILES:%=${DIR}/%} ${C_FILES:%=${DIR}/%}

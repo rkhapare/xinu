@@ -230,15 +230,17 @@ int rcvr_datablock (	/* 1:OK, 0:Failed */
 	BYTE d[2];
 
 	volatile unsigned int* st_clo = (unsigned int *) BCM2835_ST_CLO;
+//	volatile unsigned int* st_clo = (unsigned int *) read_from_register(get_stregister_addr(BCM2835_ST_CLO));
 
 	unsigned int compare = *st_clo + 100000;
 
 	/* Wait for data packet in timeout of 100ms */
-	do {
-		//rcvr_mmc(d, 1);
+	//do {
+		rcvr_mmc(d, 1);
 		spi_txrx(NULL, d, 1);
-		if (d[0] != 0xFF) break;
-	} while (*st_clo < compare);
+		//if (d[0] != 0xFF) break;
+		//else printf("\n-----------------------");
+	//} while (*st_clo < compare);
 
 	if (d[0] != 0xFE) return 0;		/* If not valid data token, return with error */
 

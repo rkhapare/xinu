@@ -55,7 +55,7 @@
 #define get_gpioregister_addr(offset)   (BCM2835_GPIO_BASE + offset)
 #define get_stregister_addr(st_offset)   (BCM2835_ST_BASE + st_offset)
 #define read_from_register(addr)        (*(volatile unsigned int *)(addr))
-#define write_to_register(addr, val)    (*(volatile unsigned int *)(addr)) = (val)
+#define write_to_register(addr, val)    (*(volatile unsigned int *)(addr) = (val))
 
 //FUNCTION SELECTORS -> 3 bits -> 8 combinations
 #define BCM2835_GPIO_FSEL_MASK		0x7

@@ -17,7 +17,7 @@
 #PLATFORM := x86
 PLATFORM := arm-rpi
 USERNAME := rkhapare
-NODE := 32
+NODE := 31
 
 # Filename of boot image to create (platform can override it if really needed)
 BOOTIMAGE := xinu.boot
